@@ -5,18 +5,21 @@
 #include <iostream>
 
 using namespace std;
-
+// metoda oceniająca stan planszy
 int minimax(vector<vector<char>>& board, int depth, bool isMax, char player, char opponent, int alpha, int beta, int maxDepth) {
     int score = evaluate(board, player);
 
+    // zwrócenie wyniku jeśli osiągnięto maksymalną głębokość drzewa gry
     if (score == 10) return score - depth;
     if (score == -10) return score + depth;
     if (!isMovesLeft(board)) return 0;
-
+    // rekurencyjne wywołanie minimax
     if (depth >= maxDepth) return score;
-
+    // algorytm minimax
     if (isMax) {
+        // maksymalizacja wartości
         int best = numeric_limits<int>::min();
+        // iteracja po planszy
         for (std::vector<std::vector<char>>::size_type i = 0; i < board.size(); i++) {
             for (std::vector<char>::size_type j = 0; j < board.size(); j++) {
                 if (board[i][j] == EMPTY) {
@@ -30,7 +33,9 @@ int minimax(vector<vector<char>>& board, int depth, bool isMax, char player, cha
         }
         return best;
     } else {
+        // minimalizacja wartości
         int best = numeric_limits<int>::max();
+        // iteracja po planszy
         for (std::vector<std::vector<char>>::size_type i = 0; i < board.size(); i++) {
             for (std::vector<char>::size_type j = 0; j < board.size(); j++) {
                 if (board[i][j] == EMPTY) {
@@ -45,14 +50,15 @@ int minimax(vector<vector<char>>& board, int depth, bool isMax, char player, cha
         return best;
     }
 }
-
+// metoda znajdująca najlepszy ruch
 pair<int, int> findBestMove(vector<vector<char>>& board, char player, char opponent, int maxDepth, double& duration) {
     int bestVal = numeric_limits<int>::min();
     pair<int, int> bestMove = {-1, -1};
-
+    // pomiar czasu
     auto start = chrono::high_resolution_clock::now();
-
+    // iteracja po planszy
     for (std::vector<std::vector<char>>::size_type i = 0; i < board.size(); i++) {
+        // iteracja po wierszach
         for (std::vector<char>::size_type j = 0; j < board.size(); j++) {
             if (board[i][j] == EMPTY) {
                 board[i][j] = player;
@@ -66,7 +72,7 @@ pair<int, int> findBestMove(vector<vector<char>>& board, char player, char oppon
             }
         }
     }
-
+    // zakończenie pomiaru czasu
     auto end = chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed = end - start;
     duration = elapsed.count();

@@ -3,7 +3,7 @@
 #include <algorithm>
 
 using namespace std;
-
+// metoda wypisująca planszę
 void printBoard(const vector<vector<char>>& board) {
     int size = board.size();
     for (int i = 0; i < size; i++) {
@@ -21,7 +21,7 @@ void printBoard(const vector<vector<char>>& board) {
         }
     }
 }
-
+// metoda sprawdzająca czy są jeszcze ruchy do wykonania
 bool isMovesLeft(const vector<vector<char>>& board) {
     for (const auto& row : board) {
         for (char cell : row) {
@@ -30,16 +30,16 @@ bool isMovesLeft(const vector<vector<char>>& board) {
     }
     return false;
 }
-
+// metoda oceniająca stan planszy
 int evaluate(const vector<vector<char>>& board, char player) {
     int size = board.size();
-
+    // sprawdzanie wierszy
     for (int row = 0; row < size; row++) {
         if (board[row][0] != EMPTY && all_of(board[row].begin(), board[row].end(), [&](char c){ return c == board[row][0]; })) {
             return (board[row][0] == player) ? 10 : -10;
         }
     }
-
+    // sprawdzanie kolumn
     for (int col = 0; col < size; col++) {
         char first = board[0][col];
         if (first != EMPTY) {
@@ -53,7 +53,7 @@ int evaluate(const vector<vector<char>>& board, char player) {
             if (win) return (first == player) ? 10 : -10;
         }
     }
-
+    // sprawdzanie przekątnych
     char firstDiagonal = board[0][0];
     if (firstDiagonal != EMPTY) {
         bool win = true;
@@ -65,7 +65,7 @@ int evaluate(const vector<vector<char>>& board, char player) {
         }
         if (win) return (firstDiagonal == player) ? 10 : -10;
     }
-
+    // sprawdzanie drugiej przekątnej
     char secondDiagonal = board[0][size - 1];
     if (secondDiagonal != EMPTY) {
         bool win = true;
